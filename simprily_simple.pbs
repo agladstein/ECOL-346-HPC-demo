@@ -1,0 +1,17 @@
+#!/bin/bash
+#PBS -N simprily1
+## Change your group
+#PBS -W group_list=mfh
+#PBS -q standard
+#PBS -l cput=00:05:00
+#PBS -l walltime=00:05:00
+#PBS -l select=1:ncpus=1:mem=6gb
+#PBS -l place=pack:shared
+#PBS -j oe
+
+
+cd $PBS_O_WORKDIR/SimPrily
+echo $PBS_O_WORKDIR/SimPrily
+
+echo "python simprily.py -p examples/eg1/param_file_eg1.txt -m examples/eg1/model_file_eg1.csv -i 1 -o output"
+python simprily.py -p examples/eg1/param_file_eg1.txt -m examples/eg1/model_file_eg1.csv -i 1 -o output

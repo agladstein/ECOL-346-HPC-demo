@@ -1,0 +1,25 @@
+#!/bin/bash
+#PBS -N simprilyP
+## Change your group
+#PBS -W group_list=mfh
+#PBS -q standard
+#PBS -J 1-2
+#PBS -l cput=00:280:00
+#PBS -l walltime=00:10:00
+#PBS -l select=1:ncpus=28:mem=168gb
+#PBS -l place=pack:shared
+#PBS -j oe
+
+module load parallel
+
+cd $PBS_O_WORKDIR/SimPrily
+echo $PBS_O_WORKDIR/SimPrily
+
+ID=${PBS_ARRAY_INDEX}
+
+PBS_ID=$(echo ${PBS_JOBID} | cut -d '[' -f1)
+echo "PBS_ID: ${PBS_ID}"
+
+OUT=${PBS_O_WORKDIR}/output/${PBS_ID}
+
+seq 1 100 | parallel -j 28 python simprily.py -p examples/eg1/param_file_eg1.txt -m examples/eg1/model_file_eg1.csv -i ${ID}_{} -o ${OUT}
